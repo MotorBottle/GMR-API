@@ -1,0 +1,25 @@
+version: "3.9"
+
+services:
+  gmr-api:
+    build: .
+    container_name: gmr-api
+    environment:
+      MUJOCO_GL: ${MUJOCO_GL:-glfw}
+      DISPLAY: ${DISPLAY}
+      SMPLX_MODEL_DIR: /app/assets/body_models
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./assets/body_models:/app/assets/body_models:ro
+      - ./videos:/app/videos
+      - /tmp/.X11-unix:/tmp/.X11-unix
+    restart: unless-stopped
+    # Uncomment the block below to run with an NVIDIA GPU
+    # deploy:
+    #   resources:
+    #     reservations:
+    #       devices:
+    #         - driver: nvidia
+    #           count: all
+    #           capabilities: [gpu]

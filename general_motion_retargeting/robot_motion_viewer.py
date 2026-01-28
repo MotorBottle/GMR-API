@@ -51,8 +51,8 @@ class RobotMotionViewer:
                 # video recording
                 record_video=False,
                 video_path=None,
-                video_width=640,
-                video_height=480,
+                video_width=540,
+                video_height=960,
                 keyboard_callback=None,
                 ):
         
@@ -127,7 +127,7 @@ class RobotMotionViewer:
             self.viewer.cam.lookat = self.data.xpos[self.model.body(self.robot_base).id]
             self.viewer.cam.distance = self.viewer_cam_distance
             self.viewer.cam.elevation = -10  # 正面视角，轻微向下看
-            # self.viewer.cam.azimuth = 180    # 正面朝向机器人
+            self.viewer.cam.azimuth = 270    # 正面朝向机器人
         
         if human_motion_data is not None:
             # Clean custom geometry
