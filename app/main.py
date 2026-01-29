@@ -66,7 +66,15 @@ def render_gvhmr_to_video(
         verbose=False,
     )
 
-    renderer = mj.Renderer(retarget.model, height=height, width=width)
+    # Clamp to model offscreen framebuffer limits to avoid renderer errors
+    max_offh = int(retarget.model.vis.global_.offheight)
+    max_offw = int(retarget.model.vis.global_.offwidth)
+    if max_offh > 0 and height > max_offh:
+        height = max_offh
+    if max_offw > 0 and width > max_offw:
+        width = max_offw
+
+    renderer = None
     # Camera roughly matches RobotMotionViewer front view
     camera = mj.MjvCamera()
     cam_opt = mj.MjvOption()
@@ -78,6 +86,8 @@ def render_gvhmr_to_video(
 
     output_path.parent.mkdir(parents=True, exist_ok=True)
     writer = imageio.get_writer(output_path, fps=aligned_fps)
+
+    renderer = mj.Renderer(retarget.model, height=height, width=width)
 
     try:
         for frame in smplx_data_frames:
@@ -98,6 +108,11 @@ def render_gvhmr_to_video(
             img = renderer.render()
             writer.append_data(img)
     finally:
+        try:
+            if renderer is not None:
+                renderer.close()
+        except Exception:
+            pass
         writer.close()
 
     return output_path

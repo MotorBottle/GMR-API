@@ -9,6 +9,8 @@ def main():
     parser.add_argument("--pt", required=True, type=pathlib.Path, help="Path to GVHMR .pt file")
     parser.add_argument("--robot", default="unitree_g1", help="Robot name")
     parser.add_argument("--out", default="out.mp4", type=pathlib.Path, help="Output mp4 path")
+    parser.add_argument("--width", type=int, default=None, help="Render width override")
+    parser.add_argument("--height", type=int, default=None, help="Render height override")
     args = parser.parse_args()
 
     if not args.pt.is_file():
@@ -18,6 +20,10 @@ def main():
     with args.pt.open("rb") as f:
         files = {"file": (args.pt.name, f, "application/octet-stream")}
         data = {"robot": args.robot}
+        if args.width:
+            data["width"] = str(args.width)
+        if args.height:
+            data["height"] = str(args.height)
         resp = requests.post(url, files=files, data=data, timeout=600)
 
     if resp.status_code != 200:
