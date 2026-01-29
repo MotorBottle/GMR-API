@@ -16,7 +16,17 @@ Volumes:
 - `./assets/body_models` → `/app/assets/body_models` (SMPL-X models, read-only)
 - `./videos` → `/app/videos` (outputs)
 
-If you want GUI rendering, ensure `DISPLAY` and `/tmp/.X11-unix` are mounted (already in compose). GPU: uncomment the NVIDIA block in `docker-compose.yml` and set `MUJOCO_GL=egl`.
+This service renders headlessly using MuJoCo’s offscreen renderer (`MUJOCO_GL=osmesa`). No display/X forwarding is needed. GPU: if you prefer EGL, set `MUJOCO_GL=egl` and uncomment the NVIDIA block in `docker-compose.yml`.
+
+### APT mirror (Docker)
+The Dockerfile accepts `--build-arg APT_MIRROR=...` if you need a local mirror. Leave it empty to use Ubuntu defaults:
+```
+docker compose build --no-cache --build-arg APT_MIRROR=
+```
+or set e.g.
+```
+docker compose build --no-cache --build-arg APT_MIRROR=http://mirrors.tuna.tsinghua.edu.cn/ubuntu/
+```
 
 ## API
 - `GET /healthz` — liveness check
@@ -27,9 +37,11 @@ If you want GUI rendering, ensure `DISPLAY` and `/tmp/.X11-unix` are mounted (al
   - `height` (optional): video height
 Returns MP4 file.
 
+Dependency note: form uploads require `python-multipart` (now included in the Dockerfile and `setup.py`).
+
 ## Resolution & Camera
-- Default render size: `DEFAULT_WIDTH`/`DEFAULT_HEIGHT` in `app/main.py` (currently 540x960). Override per request with `width`/`height` form fields.
-- Camera is set in `app/main.py` when rendering:
+- Default render size: `DEFAULT_WIDTH`/`DEFAULT_HEIGHT` in `app/main.py` (currently 540x960). Override per request with `width`/`height`.
+- Camera (headless renderer) is set in `app/main.py`:
   - Tracks robot base (`ROBOT_BASE_DICT[robot]`)
   - `distance` from `VIEWER_CAM_DISTANCE_DICT[robot]`
   - `elevation = -10`

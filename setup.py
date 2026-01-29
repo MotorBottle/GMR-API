@@ -27,6 +27,7 @@ setup(
     "protobuf",
     "redis[hiredis]",
     "imageio[ffmpeg]",
+    "python-multipart",
   ],
   python_requires='>=3.10',
 )
