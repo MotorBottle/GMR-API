@@ -62,6 +62,7 @@ assets/body_models/
 smplx/
 body_models/
 *.pkl
+*.npz
 *.pth
 *.pt
 *.ckpt
@@ -106,6 +107,7 @@ tmp/
 motion_data/
 
 GVHMR/
+_ext/
 
 batch_twist1_to_csv.py
 
