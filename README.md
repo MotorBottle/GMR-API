@@ -17,6 +17,17 @@ pip install fastapi uvicorn[standard] python-multipart
 uvicorn app.main:app --host 0.0.0.0 --port 8000
 ```
 
+## SMPL-X models (required)
+1. Register / log in at https://smpl-x.is.tue.mpg.de/download.php
+2. Download SMPL-X v1.1 “NPZ+PKL” package.
+3. Place the model files as:
+   ```
+   assets/body_models/smplx/SMPLX_NEUTRAL.pkl
+   assets/body_models/smplx/SMPLX_FEMALE.pkl
+   assets/body_models/smplx/SMPLX_MALE.pkl
+   ```
+4. No config change is needed; the API and scripts look in `assets/body_models`.
+
 ## Quick Start (Docker)
 ```bash
 docker compose up --build
