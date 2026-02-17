@@ -5,7 +5,7 @@ services:
     build: .
     container_name: gmr-api
     environment:
-      MUJOCO_GL: ${MUJOCO_GL:-osmesa}
+      MUJOCO_GL: ${MUJOCO_GL:-egl}
       SMPLX_MODEL_DIR: /app/assets/body_models
     ports:
       - "8000:8000"
@@ -14,10 +14,10 @@ services:
       - ./videos:/app/videos
     restart: unless-stopped
     # Uncomment the block below to run with an NVIDIA GPU
-    # deploy:
-    #   resources:
-    #     reservations:
-    #       devices:
-    #         - driver: nvidia
-    #           count: all
-    #           capabilities: [gpu]
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu,utility,compute,graphics,video]
