@@ -30,7 +30,7 @@ uvicorn app.main:app --host 0.0.0.0 --port 8000
 
 ## Quick Start (Docker)
 ```bash
-docker compose up --build
+docker compose up -d --build
 ```
 Volumes:
 - `./assets/body_models` -> `/app/assets/body_models` (SMPL-X models, read-only)
