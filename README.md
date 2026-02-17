@@ -1,6 +1,17 @@
 # GMR API Usage
 
-FastAPI service for converting human motion inputs to robot motion outputs based on GMR.
+FastAPI service for yanjieze/GMR, now supports gvhmr and smplx(z-up and y-up).
+
+## SMPL-X models (required)
+1. Register / log in at https://smpl-x.is.tue.mpg.de/download.php
+2. Download SMPL-X v1.1 “NPZ+PKL” package.
+3. Place the model files as:
+   ```
+   assets/body_models/smplx/SMPLX_NEUTRAL.pkl
+   assets/body_models/smplx/SMPLX_FEMALE.pkl
+   assets/body_models/smplx/SMPLX_MALE.pkl
+   ```
+4. No config change is needed; the API and scripts look in `assets/body_models`.
 
 ## Quick Start (Local)
 ```bash
@@ -17,17 +28,6 @@ pip install fastapi uvicorn[standard] python-multipart
 uvicorn app.main:app --host 0.0.0.0 --port 8000
 ```
 
-## SMPL-X models (required)
-1. Register / log in at https://smpl-x.is.tue.mpg.de/download.php
-2. Download SMPL-X v1.1 “NPZ+PKL” package.
-3. Place the model files as:
-   ```
-   assets/body_models/smplx/SMPLX_NEUTRAL.pkl
-   assets/body_models/smplx/SMPLX_FEMALE.pkl
-   assets/body_models/smplx/SMPLX_MALE.pkl
-   ```
-4. No config change is needed; the API and scripts look in `assets/body_models`.
-
 ## Quick Start (Docker)
 ```bash
 docker compose up --build
@@ -41,7 +41,7 @@ Set `MUJOCO_GL=osmesa` (default) for headless; use `egl` + NVIDIA block for GPU.
 ## Endpoints
 - `GET /healthz`
 - `POST /process` (recommended)
-- `POST /render` (legacy; fixed `input_type=gvhmr`)
+- `POST /render` (legacy, use if you know how; fixed `input_type=gvhmr`)
 
 ## What the API does
 - Accepts motion inputs (`gvhmr` .pt or `smplx_npz` .npz).
