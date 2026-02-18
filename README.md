@@ -36,7 +36,9 @@ Volumes:
 - `./assets/body_models` -> `/app/assets/body_models` (SMPL-X models, read-only)
 - `./videos` -> `/app/videos` (outputs)
 
-Set `MUJOCO_GL=osmesa` (default) for headless; use `egl` + NVIDIA block for GPU.
+Rendering backend:
+- Default compose/Dockerfile uses `MUJOCO_GL=egl` for GPU. Leave the NVIDIA device block enabled when a GPU is available.
+- If you run without a GPU, set `MUJOCO_GL=osmesa` in the env and remove/comment the NVIDIA device block to avoid startup errors.
 
 ## Endpoints
 - `GET /healthz`
