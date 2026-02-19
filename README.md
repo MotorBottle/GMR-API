@@ -39,6 +39,7 @@ Volumes:
 Rendering backend:
 - Default compose/Dockerfile uses `MUJOCO_GL=egl` for GPU. Leave the NVIDIA device block enabled when a GPU is available.
 - If you run without a GPU, set `MUJOCO_GL=osmesa` in the env and remove/comment the NVIDIA device block to avoid startup errors.
+- Known issue: GPU rendering won't work in docker desktop/wsl as the GL/EGL capabilities were not reachable
 
 ## Endpoints
 - `GET /healthz`
